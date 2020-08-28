@@ -9,6 +9,7 @@
 #include "frontier_util.h"
 #include "party_menu.h"
 #include "pokenav.h"
+#include "random.h"
 #include "script.h"
 #include "string_util.h"
 #include "strings.h"
@@ -57,7 +58,7 @@ static void FaintFromFieldPoison(u8 partyIdx)
 static bool32 MonFaintedFromPoison(u8 partyIdx)
 {
     struct Pokemon *pokemon = gPlayerParty + partyIdx;
-    if (IsMonValidSpecies(pokemon) && GetMonData(pokemon, MON_DATA_HP) == 0 && GetAilmentFromStatus(GetMonData(pokemon, MON_DATA_STATUS)) == AILMENT_PSN)
+    if (IsMonValidSpecies(pokemon) && GetMonData(pokemon, MON_DATA_HP) == PSN_REMAINING_HP && GetAilmentFromStatus(GetMonData(pokemon, MON_DATA_STATUS)) == AILMENT_PSN)
     {
         return TRUE;
     }
@@ -116,6 +117,17 @@ void TryFieldPoisonWhiteOut(void)
     ScriptContext1_Stop();
 }
 
+u32 CalcPsnDamage(struct Pokemon *pokemon) {
+    u32 max_hp = GetMonData(pokemon, MON_DATA_MAX_HP);
+
+    if (PSN_DEALS_PERCNT) {
+        max_hp = GetMonData(pokemon, MON_DATA_MAX_HP);
+        return RandRangeF(MIN_PSN_DAMAGE, MAX_PSN_DAMAGE) * (float) max_hp / 100;
+    }
+
+    return RandRange(MIN_PSN_DAMAGE, MAX_PSN_DAMAGE);
+}
+
 s32 DoPoisonFieldEffect(void)
 {
     int i;
@@ -128,7 +140,8 @@ s32 DoPoisonFieldEffect(void)
         if (GetMonData(pokemon, MON_DATA_SANITY_HAS_SPECIES) && GetAilmentFromStatus(GetMonData(pokemon, MON_DATA_STATUS)) == AILMENT_PSN)
         {
             hp = GetMonData(pokemon, MON_DATA_HP);
-            if (hp == 0 || --hp == 0)
+            hp -= min(CalcPsnDamage(pokemon), hp - PSN_REMAINING_HP);
+            if (hp == PSN_REMAINING_HP)
             {
                 numFainted++;
             }
