@@ -31,3 +31,11 @@ u16 Random2(void)
     gRng2Value = ISO_RANDOMIZE1(gRng2Value);
     return gRng2Value >> 16;
 }
+
+u16 RandRange(int min, int max) {
+    return Random() % (max - min + 1) + min;
+}
+
+f32 RandRangeF(f32 min, f32 max) {
+    return (f32)Random() / MAX_RAND_16 * (max - min) + min;
+}
