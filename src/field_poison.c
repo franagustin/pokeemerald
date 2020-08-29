@@ -117,10 +117,12 @@ void TryFieldPoisonWhiteOut(void)
     ScriptContext1_Stop();
 }
 
-u32 CalcPsnDamage(struct Pokemon *pokemon) {
+u32 CalcPsnDamage(struct Pokemon *pokemon)
+{
     u32 max_hp = GetMonData(pokemon, MON_DATA_MAX_HP);
 
-    if (PSN_DEALS_PERCNT) {
+    if (PSN_DEALS_PERCNT)
+    {
         max_hp = GetMonData(pokemon, MON_DATA_MAX_HP);
         return RandRangeF(MIN_PSN_DAMAGE, MAX_PSN_DAMAGE) * (float) max_hp / 100;
     }
