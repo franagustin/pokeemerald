@@ -11,11 +11,11 @@
 
 #define MIN_PSN_DAMAGE 5
 #define MAX_PSN_DAMAGE 20
-// If set to a "falsy" value (FALSE or 0), MIN and MAX will be applied as absolute damage
-// If set to a "truthy" value (anything else), MIN and MAX will be applied as percentage
+// If set to a "falsy" value (FALSE or 0), MIN and MAX will be applied as absolute damage.
+// If set to a "truthy" value (anything else), MIN and MAX will be applied as percentage.
 #define PSN_DEALS_PERCNT TRUE
-// If set to 0, your pokemon will faint from poison outside battle
-// If set to any positive number, your pokemon will survive poison with that ammount of HP
+// If set to 0, your pokemon will faint from poison outside battle.
+// If set to any positive number, your pokemon will survive poison with that amount of HP.
 #define PSN_REMAINING_HP 0
 
 #endif //GUARD_CONSTANTS_FIELD_POISON_H
